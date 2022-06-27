@@ -296,6 +296,7 @@ const filtro_cat = req.body.categoria ||
     'Marketing Online',
     'Otros',
     'Cursos',
+    'Ingenierias',
   ]
 if (req.user) {
     const tipo_cuenta = req.user.tipo_cuenta;

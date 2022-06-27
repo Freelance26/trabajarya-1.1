@@ -852,6 +852,7 @@ userCtrl.renderListaCandidatosFiltro = async (req, res) => {
         'Marketing Online',
         'Otros',
         'Cursos',
+        'Ingenierias',
       ]
     if (req.user) {
         const userlog = req.user;
