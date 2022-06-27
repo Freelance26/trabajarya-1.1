@@ -427,7 +427,7 @@ userCtrl.signupEmpresa = async (req, res) => {
             await newAdmin.save();
             
             req.flash('success_msg', 'Usuario registrado exitosamente.')
-            res.redirect('/user/acceso-empresa');
+            res.redirect('/user/acceso-empresas');
             
 
         }
