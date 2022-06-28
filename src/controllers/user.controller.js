@@ -403,7 +403,8 @@ userCtrl.signupEmpresa = async (req, res) => {
 
          ///console.log(alert)
 
-         res.render('/user/signup/signup-enterprise', {
+        //  res.render('/user/signup/signup-enterprise', {
+         res.render('users/signup-enterprise', {
            errors
         });
     }
@@ -416,7 +417,8 @@ userCtrl.signupEmpresa = async (req, res) => {
             //res.redirect('/');
             errors.push({ text: "El email ya se encuentra en uso." });
 
-            res.render('signup-admin', {
+            res.render('users/signup-enterprise', {
+            // res.render('signup-admin', {
                 errors
              });
         } else {
