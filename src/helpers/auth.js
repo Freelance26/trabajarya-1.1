@@ -7,11 +7,23 @@ const PaymentReport = require('../models/PaymentReport')
 
 
 helpers.isAuthenticated = (req, res, next) => {
+ 
     if (req.isAuthenticated()){
+        console.log('hola')
         return next();
     }
     req.flash('error:msg', 'Debe Logearse primero');
     res.redirect('/');
+}
+helpers.isAuthenticatedPost = (req, res, next) => {
+ 
+    if (req.isAuthenticated()){
+        console.log('pa alante')
+        return next();
+    } else {
+        console.log('pa atras')
+        res.status(400);
+    }
 }
 
 helpers.renderPanel = async (req,res) => {

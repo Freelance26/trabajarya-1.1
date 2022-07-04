@@ -1,0 +1,233 @@
+<%- include ('../partials/header'); %>
+<script src="https://cdn.tiny.cloud/1/n4nbp4vjkaax7usn4epg3l4q86hdb1j73wwong0nyqgrarvq/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>tinymce.init({ selector: 'textarea' });</script>
+<style>
+  .write {
+  padding-top: 50px;
+}
+
+.tox-tinymce{
+  width: 80vw !important;
+}
+
+.writeImg {
+  /* margin-left: 150px; */
+  width: 70vw;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.writeForm {
+  position: relative;
+}
+
+.writeFormGroup {
+  /* margin-left: 150px; */
+  display: flex;
+  align-items: center;
+}
+
+.writeIcon {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgb(121, 118, 118);
+  cursor: pointer;
+}
+
+.writeInput {
+  font-size: 30px;
+  border: none;
+  padding: 20px;
+  width: 45vw;
+}
+
+.writeInput:focus {
+  outline: none;
+}
+
+.writeText {
+  font-size: 20px;
+  height: 100vh;
+}
+
+.writeSubmit {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  color: white;
+  background-color: teal;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+</style>
+
+<div class="container-margin">
+  <section class="section breadcrumbs-custom">
+    <div class="breadcrumbs-custom-main bg-image bg-primary">
+      <div class="container">
+        <h3 class="breadcrumbs-custom-title">Actualizar Post</h3>
+      </div>
+    </div>
+  </section>
+  <section class="section section-md">
+    <div class="container">
+      <div class="write">
+        <img class="pwriteImg" src="<%= post.photo %>" alt="" />
+        <!-- {file && (
+          <img class="writeImg" src={URL.createObjectURL(file)} alt="" />
+        )} -->
+        <form class="writeForm" id="my-form" enctype="multipart/form-data">
+          <div class="writeFormGroup">
+            <label htmlFor="fileInput">
+              <i class="writeIcon fas fa-plus"></i>
+            </label>
+            <div class="upload-btn-wrapper">
+              <button class="btn">Subir Imagen Principal</button>
+              <input type="file" name="photo" />
+            </div>
+            <!-- <input
+              type="file"
+              id="fileInput"
+              name="photo"
+            /> -->
+            <input
+              type="text"
+              placeholder="Titulo"
+              class="writeInput"
+              name="title"
+              value="<%= post.title %>"
+
+            />
+            
+            <button class="button button-primary"  data-user="<%= user._id %>" data-post="<%= post._id %>" type="submit" id="btnSubmit" onclick="tinyMCE.triggerSave(true,true);">
+              Publicar
+            </button>
+            <div class="spinner-border text-primary" id="loader"></div>
+          </div>
+          <div class="writeFormGroup">
+            <textarea
+              placeholder="Escribe aquí..."
+              type="text"
+              class="writeInput writeText"
+              name="desc"
+              value="<%- post.desc %>"
+
+            ></textarea>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  $(document).ready(function () {
+
+    $("#loader").hide();
+
+        $("#btnSubmit").click(function (event) {
+            //stop submit the form, we will post it manually.
+            event.preventDefault();
+     
+
+            $("#btnSubmit").hide();
+            $("#loader").show();
+            // Get form
+            var form = $('#my-form')[0];
+     
+            // FormData object 
+            var data = new FormData(form);
+
+            var userIdBtn = document.getElementById('btnSubmit');
+            var postId = userIdBtn.getAttribute('data-post');
+            var userId = userIdBtn.getAttribute('data-user');
+
+
+     
+            // If you want to add an extra field for the FormData
+            data.append("postId", postId);
+            data.append("userId", userId);
+
+            for (var pair of data.entries()) {
+              console.log(pair[0] + ", " + pair[1]);
+            }
+     
+            // disabled the submit button
+            $("#btnSubmit").prop("disabled", true);
+     
+            $.ajax({
+                type: "PUT",
+                enctype: 'multipart/form-data',
+                url: `/blog/update/${postId}`,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 800000,
+                success: function (data) {
+                    $("#output").text(data);
+                    console.log("SUCCESS : ", data);
+                    $("#btnSubmit").prop("disabled", false);
+                    Swal.fire(
+                      'Post Actualizado',
+                      `El post ha sido actualizado exitosamente`,
+                      'success'
+                    )
+                    console.log(data)
+                    setTimeout(function(){location.href=`/blog/${postId}`} , 2000);   
+                },
+                error: function (e) {
+                  Swal.fire(
+                  'Hubo un error',
+                  `Hubo un error!`,
+                  'error'
+                )
+                    $("#output").text(e.responseText);
+                    console.log("ERROR : ", e);
+                    $("#btnSubmit").prop("disabled", false);
+                    $("#btnSubmit").show();
+                $("#loader").hide();
+                }
+            });
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %>

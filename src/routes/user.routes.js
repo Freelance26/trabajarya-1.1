@@ -1,5 +1,6 @@
 //Modulos requeridos
 const { Router } = require('express');
+const {randomNumber} = require('../helpers/libs');
 const app = require('../server')
 const router = Router();
 const TestDate = require('../models/TestDate')
