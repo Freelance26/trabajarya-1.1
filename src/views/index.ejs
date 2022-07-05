@@ -319,39 +319,26 @@
     <div class="container" >
       <h3 class="text-center">Blog</h3>
       <div class="row row-30 row-xl-70">
-        <div class="col-12 col-lg-4">
-     
-          <article class="post-minimal h-100"><a class="post-minimal-media" href="/detalles-blog"><img
-                class="post-minimal-image" src="/images/blog-1-369x253.jpg" alt="" width="369" height="253" /></a>
-            <div class="post-minimal-main">
-              <h5 class="post-minimal-title"><a href="/">8 Predicciones Sorprendentes Sobre el Futuro del Trabajo</a></h5>
-              <p>No se puede negar que el panorama del trabajo está cambiando. Cada vez más empresas están adoptando políticas de trabajo flexibles...</p>
-              <time class="post-minimal-time" datetime="2019">Noviembre 23, 2020</time>
-            </div>
-          </article>
-        </div>
-        <div class="col-12 col-lg-4">
-      
-          <article class="post-minimal h-100"><a class="post-minimal-media" href="/detalles-blog"><img
-                class="post-minimal-image" src="/images/blog-2-369x253.jpg" alt="" width="369" height="253" /></a>
-            <div class="post-minimal-main">
-              <h5 class="post-minimal-title"><a href="/">Éxito en la búsqueda de empleo: encontrar un trabajo de desarrollo empresarial</a></h5>
-              <p>Los profesionales del desarrollo empresarial están en el corazón de todo tipo de organizaciones, desde startups hasta...</p>
-              <time class="post-minimal-time" datetime="2019">Noviembre 23, 2020</time>
-            </div>
-          </article>
-        </div>
-        <div class="col-12 col-lg-4">
-      
-          <article class="post-minimal h-100"><a class="post-minimal-media" href="/detalles-blog"><img
-                class="post-minimal-image" src="/images/blog-3-369x253.jpg" alt="" width="369" height="253" /></a>
-            <div class="post-minimal-main">
-              <h5 class="post-minimal-title"><a href="/">Cómo impresionar a su futuro empleador</a></h5>
-              <p>Estás comprometido con tu búsqueda de trabajo, y usas cada gramo de tu tiempo libre para ...</p>
-              <time class="post-minimal-time" datetime="2019">Noviembre 23, 2020</time>
-            </div>
-          </article>
-        </div>
+        <% if(posts) { %>
+
+          <% posts.forEach(post=>{ %>
+            <div class="col-12 col-lg-4">
+              <article class="post-classic"><a class="post-classic-media" href="/blog/<%= post._id %>"><img class="post-classic-image" src="<%= post.photo %>" alt="" style="width: 369px; height:253px;"/></a>
+
+                <h4 class="post-classic-title"><a href="/blog/<%= post._id %>"><%= post.title %></a></h4>
+                <time class="post-classic-time" datetime="2022"><%= post.createdAt.toLocaleDateString() %></time>
+                <!-- <div class="post-classic-text">
+                  <p>There’s no denying that the landscape of work is changing. More and more companies are adopting </p>
+                </div>
+                <ul class="post-classic-meta">
+                  <li><a href="blog-post.html"> <span class="icon mdi mdi-comment-outline"></span><span>3 Comments</span></a></li>
+                  <li><a href="#"><span class="icon mdi mdi-thumb-up-outline"></span><span>30 Likes</span></a></li>
+                </ul> -->
+              </article>
+          </div>
+        <% }) %>
+        <% } %>
+
       </div>
     </div>
   </section>

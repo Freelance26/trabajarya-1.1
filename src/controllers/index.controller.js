@@ -3,6 +3,7 @@ const indexCtrl = {};
 
 //Importando modelo de Usuarios
 const User = require('../models/Users')
+const Post = require("../models/PostBlog");
 
 //Vista principal de la pagina
 indexCtrl.renderIndex =  async (req, res) => {
@@ -14,7 +15,8 @@ indexCtrl.renderIndex =  async (req, res) => {
         }             
     };
     const applicant = await User.find({tipo_cuenta: "Freelancer"}).sort({_id: -1}).limit(3);
-    res.render('index', {applicant});
+    const posts = await Post.find().sort({_id: -1}).limit(3);
+    res.render('index', {applicant, posts:posts});
 };
 
 //Vista de la seccion de contacto
