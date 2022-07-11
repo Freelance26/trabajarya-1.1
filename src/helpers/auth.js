@@ -271,7 +271,6 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
     // res.render('administracion', {users});
 
     if (req.query.buscar_free) {
-        console.log('uwu')
         if (req.user) {
             const tipo_cuenta = req.user.tipo_cuenta;
             const buscar_free = req.query.buscar_free;
@@ -280,7 +279,7 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
             const amount = await User.find({ approved: false})
             console.log(amount)
             console.log('a')
-            const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false }, function (error, applicant) {
+            const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Empresa" }, function (error, applicant) {
                 if (error) {
                     console.log('error en el find')
                 }
@@ -300,12 +299,11 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
                 })
         } else {
             try {
-                console.log('uwu')
                 const buscar_free = req.query.buscar_free;
                 const xPage = 10;
                 const page = req.params.page || 1;
                 const amount = await User.find({ approved: false})
-                const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false }, function (error, applicant) {
+                const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Empresa" }, function (error, applicant) {
                     if (error) {
                         console.log('error en el find')
                     }
@@ -332,9 +330,8 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
         const page = req.params.page || 1;
         const amount = await User.find({ approved: false})
         console.log(amount)
-        const applicant = await User.find({ approved: false }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
+        const applicant = await User.find({ approved: false ,tipo_cuenta:"Empresa"}).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
             console.log(applicant.length)
-            console.log('q onda')
             User.count({approved: false}, (error, count) => {
                 if (error) {
                     console.log('error1')
@@ -350,8 +347,7 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
         const xPage = 10;
         const page = req.params.page || 1;
         const amount = await User.find({ approved: false})
-        console.log('puta')
-        const applicant = await User.find({ approved: false }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
+        const applicant = await User.find({ approved: false,tipo_cuenta:"Empresa" }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
             User.count({approved: false}, (error, count) => {
                 if (error) {
                     console.log('error1')
