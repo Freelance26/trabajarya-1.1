@@ -16,7 +16,7 @@ router.post('/send-mail', async (req,res) => {
     const { name, email, phone, message } = req.body;
 
     contentHTML = `
-        <h1>User Information</h1>
+        <h1>Información de formulario de contacto</h1>
         <ul>
             <li>Nombre de usuario: ${name}</li>
             <li>Correo electrónico: ${email}</li>
@@ -25,27 +25,44 @@ router.post('/send-mail', async (req,res) => {
         <p>${message}</p>
     `;
 
+    // Username
+// test_web@studio73pty.com
+// Password
+// Use the email account's password.
+// Incoming Server
+// mail.studio73pty.com
+// IMAP Port
+// 993
+// POP3 Port
+// 995
+// Outgoing Server
+// mail.studio73pty.com
+// SMTP Port
+// 465
+
     const transporter = nodemailer.createTransport({
-        host: 'mail.studio73pty.com',
-        port: 587,
-        secure: false,
+        host: 'mail.studio73pty.xyz',
+        port: 465,
+        // port: 587,
+        secure: true,
         auth: {
-            user: 'test_web@studio73pty.com',
-            pass: '123456qwerty'
+            user: 'trabajaryaemailsender@studio73pty.xyz',
+            pass: 'P@ssword!'
         },
-        tls:{
-            rejectUnauthorized: false
-        }
+        // tls:{
+        //     rejectUnauthorized: false
+        // }
     })
 
     try {
         const info = await transporter.sendMail({
-            from: "'trabajarya' <info@trabajarya.com>",
+            from: "'trabajarya' <trabajaryaemailsender@studio73pty.xyz>",
             to: "info@trabajarya.com",
-            subject:'Webiste contact form',
+            subject:'TrabajarYa Formulario de Contacto',
             //text:'hello world'
             html: contentHTML
         })
+        
      
   
         res.render('contacto', {msg: 'Email enviado'})
@@ -56,7 +73,7 @@ router.post('/send-mail', async (req,res) => {
     
 })
 
-router.post('/send-mail-user/', async (req,res) => {
+router.post('/send-mail-user', async (req,res) => {
     
 
     const { username, email, message, email_user } = req.body;
@@ -72,22 +89,29 @@ router.post('/send-mail-user/', async (req,res) => {
     `;
 
 
-    console.log('test')
     const transporter = nodemailer.createTransport({
-        host: 'mail.fonsecatours.com',
-        port: 587,
-        secure: false,
+        // host: 'mail.fonsecatours.com',
+        // port: 587,
+        // secure: false,
+        host: 'mail.studio73pty.xyz',
+        port: 465,
+        // port: 587,
+        secure: true,
         auth: {
-            user: 'emails@fonsecatours.com',
-            pass: '123456789'
+            user: 'trabajaryaemailsender@studio73pty.xyz',
+            pass: 'P@ssword!'
         },
-        tls:{
-            rejectUnauthorized: false
-        }
+        // auth: {
+        //     user: 'emails@fonsecatours.com',
+        //     pass: '123456789'
+        // },
+        // tls:{
+        //     rejectUnauthorized: false
+        // }
     })
     try {
         const info = await transporter.sendMail({
-            from: "'TrabajarYa' <info@trabajarya.com>",
+            from: "'trabajarya' <trabajaryaemailsender@studio73pty.xyz>",
             to: `${email_user}`,
             
             subject:'Alguien quiere contactar contigo!',

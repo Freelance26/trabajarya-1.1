@@ -277,16 +277,15 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
             const xPage = 10;
             const page = req.params.page || 1;
             const amount = await User.find({ approved: false})
-            console.log(amount)
-            console.log('a')
-            const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Empresa" }, function (error, applicant) {
+
+            const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Freelancer" }, function (error, applicant) {
                 if (error) {
                     console.log('error en el find')
                 }
             })
                 .skip((xPage * page) - xPage).limit(xPage).exec( async (err, applicant) => {
                     // User.count({approved: false}, (err, count) => {
-                   await User.count( (err, count) => {
+                   await User.count( { tipo_cuenta: "Freelancer" },(err, count) => {
                         if (err) {
                             console.log('error en el conteo')
                         } else {
@@ -303,13 +302,13 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
                 const xPage = 10;
                 const page = req.params.page || 1;
                 const amount = await User.find({ approved: false})
-                const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Empresa" }, function (error, applicant) {
+                const paymentReport = await User.find({ username: { $regex: '.*' + buscar_free + '.*', $options: 'i' }, approved: false,tipo_cuenta:"Freelancer" }, function (error, applicant) {
                     if (error) {
                         console.log('error en el find')
                     }
                 })
                     .skip((xPage * page) - xPage).limit(xPage).exec((err, applicant) => {
-                        User.count({approved: false}, (err, count) => {
+                        User.count({approved: false, tipo_cuenta:"Freelancer"}, (err, count) => {
                             if (err) {
                                 console.log('error en el conteo')
                             } else {
@@ -330,9 +329,9 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
         const page = req.params.page || 1;
         const amount = await User.find({ approved: false})
         console.log(amount)
-        const applicant = await User.find({ approved: false ,tipo_cuenta:"Empresa"}).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
+        const applicant = await User.find({ approved: false ,tipo_cuenta:"Freelancer"}).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
             console.log(applicant.length)
-            User.count({approved: false}, (error, count) => {
+            User.count({approved: false, tipo_cuenta:"Freelancer"}, (error, count) => {
                 if (error) {
                     console.log('error1')
                 } else {
@@ -347,8 +346,8 @@ helpers.renderPanelNuevosUsuarios = async (req,res) => {
         const xPage = 10;
         const page = req.params.page || 1;
         const amount = await User.find({ approved: false})
-        const applicant = await User.find({ approved: false,tipo_cuenta:"Empresa" }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
-            User.count({approved: false}, (error, count) => {
+        const applicant = await User.find({ approved: false,tipo_cuenta:"Freelancer" }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
+            User.count({approved: false, tipo_cuenta:"Freelancer"}, (error, count) => {
                 if (error) {
                     console.log('error1')
                 } else {

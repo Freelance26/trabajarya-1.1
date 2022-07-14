@@ -233,6 +233,7 @@ userCtrl.signup = async (req, res) => {
                 // const imageSaved = await User.findByIdAndUpdate(req.user.id,{$set:{filename:result.url}})
 
                 const newUser = new User({ username, email, password, tipo_cuenta,ciudad,pais,categoria,acerca, filename:resultCloud.url,cvfilename:resultCloudCv.url });
+                console.log(newUser)
                 const userId  = newUser._id
                 newUser.password = await newUser.encryptPassword(password);
                 // console.log(userId);
@@ -1323,17 +1324,21 @@ userCtrl.editPic = async (req, res) => {
 }
 userCtrl.editCv = async (req, res) => {
 
-
+    const cvUrl = randomNumber();
     const cvTempPath = req.file.path;
     const extt = path.extname(req.file.originalname).toLowerCase();
+    const targetPath_ = path.resolve(`src/public/uploads/${cvUrl}${extt}`)
 
     if(extt === '.pdf') { 
         console.log('the path is')
         console.log(cvTempPath)
         console.log(req.file)
+        await fs.rename(cvTempPath, targetPath_);
+            const newCv = cvUrl+extt
         try {
-            // const cvSaved = await User.findByIdAndUpdate(req.user.id,{$set:{cvfilename:`src/public/uploads/${newCv}`}})
-            const cvSaved = await User.findByIdAndUpdate(req.user.id,{$set:{cvfilename:`/uploads/${req.file.filename}`}})
+            const resultCloudCv = await cloudinary.v2.uploader.upload(`src/public/uploads/${newCv}`);
+            const cvSaved = await User.findByIdAndUpdate(req.user.id,{$set:{cvfilename:resultCloudCv.url}})
+            // const cvSaved = await User.findByIdAndUpdate(req.user.id,{$set:{cvfilename:`/uploads/${req.file.filename}`}})
             const user = await User.findById(req.user.id)
             res.render('./users/perfil-user-edit', {user})  
         } catch (error) {
