@@ -691,7 +691,7 @@ userCtrl.renderListaCandidatos = async (req, res) => {
     
             // await Promise.all(
                 categoriasN.map( async(value,index) => {
-                    var userCategori = await User.find({categoria: item.nombre, approved: true, tipo_cuenta: 'Freelancer'})
+                    var userCategori = await User.find({categoria: value.nombre, approved: true, tipo_cuenta: 'Freelancer'})
               
                     resultCat.push(userCategori)
                 })
@@ -1013,13 +1013,19 @@ userCtrl.actualizarCategoria = async (req, res) => {
 //Actualizar Perfil de Usuario
 userCtrl.editPerfil = async (req, res) => {
  
-    const  {cargo,direccion,salario,acerca,pais,tipoempresa,userfacebook,usertwitter,usergoogle,userlinkedin,skill_,skill_1,skill_2,skill_3,phone,categoria} = req.body
-
-    await User.findByIdAndUpdate(req.user.id,{$set:{cargo:cargo,direccion:direccion,salario:salario,acerca:acerca,pais:pais,phone:phone
-        ,tipoempresa:tipoempresa,userfacebook:userfacebook,usertwitter:usertwitter,usergoogle:usergoogle,userlinkedin:userlinkedin,categoria:categoria,
-        skill_:skill_,skill_1:skill_1,skill_2:skill_2,skill_3:skill_3}})
-    const user = await User.findById(req.user.id)
-    res.render('./users/perfil-user-edit', {user})
+    // const  {cargo,direccion,salario,acerca,pais,tipoempresa,userfacebook,usertwitter,usergoogle,userlinkedin,skill_,skill_1,skill_2,skill_3,phone,categoria} = req.body
+console.log(req.body)
+    try {
+        
+        await User.findByIdAndUpdate(req.user.id,{$set:req.body})
+        // await User.findByIdAndUpdate(req.user.id,{$set:{cargo:cargo,direccion:direccion,salario:salario,acerca:acerca,pais:pais,phone:phone
+        //     ,tipoempresa:tipoempresa,userfacebook:userfacebook,usertwitter:usertwitter,usergoogle:usergoogle,userlinkedin:userlinkedin,categoria:categoria,
+        //     skill_:skill_,skill_1:skill_1,skill_2:skill_2,skill_3:skill_3}})
+        const user = await User.findById(req.user.id)
+        res.render('./users/perfil-user-edit', {user})
+    } catch (error) {
+        console.log(error)
+    }
      
     
 }
