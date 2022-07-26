@@ -682,19 +682,25 @@ userCtrl.logout = (req, res) => {
 
 //Vista de lista de freelancer
 userCtrl.renderListaCandidatos = async (req, res) => {
+    console.log('PUTAMADRE')
     if (req.query.buscar_free) {
         if (req.user) {
             const userlog = req.user;
             const amount = await User.find({ approved: true})
             const categoriasN = await Categorias.find()
             var resultCat = []
+
+            for (const item of categoriasN) {
+                var userCategori = await User.find({categoria: item.nombre, approved: true, tipo_cuenta: 'Freelancer'})
+                resultCat.push(userCategori)
+              }
     
             // await Promise.all(
-                categoriasN.map( async(value,index) => {
-                    var userCategori = await User.find({categoria: value.nombre, approved: true, tipo_cuenta: 'Freelancer'})
+                // categoriasN.map( async(value,index) => {
+                //     var userCategori = await User.find({categoria: value.nombre, approved: true, tipo_cuenta: 'Freelancer'})
               
-                    resultCat.push(userCategori)
-                })
+                //     resultCat.push(userCategori)
+                // })
                 // console.log(resulCat)
             //   );
             //   console.log(resultCat)
@@ -1486,6 +1492,7 @@ userCtrl.descargarCv = async (req,res) => {
 userCtrl.renderListaCandidatosPanel = async (req, res) => {
     if (req.query.buscar_free) {
         if (req.user) {
+            console.log('PUTA')
             const tipo_cuenta = req.user.tipo_cuenta;
             const buscar_free = req.query.buscar_free;
             const xPage = 6;
@@ -1505,6 +1512,7 @@ userCtrl.renderListaCandidatosPanel = async (req, res) => {
                     })
                 })
         } else {
+            console.log('PUTA2')
             const buscar_free = req.query.buscar_free;
             const xPage = 6;
             const page = req.params.page || 1;
@@ -1525,6 +1533,7 @@ userCtrl.renderListaCandidatosPanel = async (req, res) => {
         }
     }
     if (req.user) {
+        console.log('PUT3A')
         const tipo_cuenta = req.user.tipo_cuenta;
         const xPage = 6;
         const page = req.params.page || 1;
@@ -1540,6 +1549,7 @@ userCtrl.renderListaCandidatosPanel = async (req, res) => {
             })
         })
     } else {
+        console.log('PUTA5')
         const xPage = 4;
         const page = req.params.page || 1;
         const applicant = await User.find({ tipo_cuenta: 'Freelancer' }).skip((xPage * page) - xPage).limit(xPage).exec((error, applicant) => {
